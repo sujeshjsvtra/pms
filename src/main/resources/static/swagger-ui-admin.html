@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PMS Admin API Documentation</title>
+  <link rel="stylesheet" type="text/css" href="/swagger-ui/swagger-ui.css" />
+  <script src="/swagger-ui/swagger-ui-bundle.js"></script>
+  <script src="/swagger-ui/swagger-ui-standalone-preset.js"></script>
+</head>
+<body>
+  <div id="swagger-ui"></div>
+
+  <script>
+    window.onload = () => {
+      const ui = SwaggerUIBundle({
+        url: "/v3/api-docs/admin-api", // ← load only admin-api
+        dom_id: "#swagger-ui",
+        deepLinking: true,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        layout: "StandaloneLayout" // no top dropdown
+      });
+      window.ui = ui;
+    };
+  </script>
+</body>
+</html>
