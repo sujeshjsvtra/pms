@@ -2,6 +2,7 @@ package com.sparksupport.pms.service;
 
 import com.sparksupport.pms.model.Product;
 import com.sparksupport.pms.repository.ProductRepository;
+import com.sparksupport.pms.util.Constants;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -63,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
         product.setActive(true);
         product.setActive(true);
         Product saved = productRepository.save(product);
-        logAudit("Product", saved.getId(), "ADD", saved);
+        logAudit(Constants.PRODUCT, saved.getId(), Constants.ADD, saved);
         return saved;
     }
 
@@ -82,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
         existingProduct.setQuantity(updatedProduct.getQuantity());
 
         Product saved = productRepository.save(existingProduct);
-        logAudit("Product", saved.getId(), "UPDATE", saved);
+        logAudit(Constants.PRODUCT, saved.getId(), Constants.UPDATE, saved);
 
         return saved;
 
@@ -97,7 +98,7 @@ public class ProductServiceImpl implements ProductService {
 
         product.setActive(false);
         productRepository.save(product);
-        logAudit("Product", id, "SOFT_DELETE", null);
+        logAudit(Constants.PRODUCT, id, Constants.SOFT_DELETE, null);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -105,7 +106,7 @@ public class ProductServiceImpl implements ProductService {
         Product optionalProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         productRepository.delete(optionalProduct);
-        logAudit("Product", id, "HARD_DELETE", null);
+        logAudit(Constants.PRODUCT, id, Constants.HARD_DELETE, null);
 
     }
 
@@ -117,7 +118,7 @@ public class ProductServiceImpl implements ProductService {
         if (!product.isActive()) {
             product.setActive(true);
             productRepository.save(product);
-            logAudit("Product", id, "RESTORE", null);
+            logAudit(Constants.PRODUCT, id, Constants.RESTORE, null);
         }
 
     }
@@ -184,6 +185,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void addProduct(Product product) {
-       productRepository.save(product);
+        productRepository.save(product);
     }
 }

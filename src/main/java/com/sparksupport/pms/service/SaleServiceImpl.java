@@ -2,10 +2,10 @@ package com.sparksupport.pms.service;
 
 import com.sparksupport.pms.model.Sale;
 import com.sparksupport.pms.repository.SaleRepository;
+import com.sparksupport.pms.util.Constants;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
- 
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,11 +45,11 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    @Transactional(rollbackFor =  Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public Sale addSale(SaleDTO saleDTO) {
         Sale sale = SaleMapper.toEntity(saleDTO);
         Sale saved = saleRepository.save(sale);
-        logAudit("Sale", saved.getId(), "ADD", saved);
+        logAudit(Constants.SALE, saved.getId(), Constants.ADD, saved);
         return saved;
     }
 
@@ -64,7 +64,7 @@ public class SaleServiceImpl implements SaleService {
         entity.setQuantity(sale.getQuantity());
         entity.setSaleDate(sale.getSaleDate());
         Sale updated = saleRepository.save(entity);
-        logAudit("Sale", updated.getId(), "UPDATE", updated);
+        logAudit(Constants.SALE, updated.getId(), Constants.UPDATE, updated);
         return updated;
     }
 
@@ -77,7 +77,7 @@ public class SaleServiceImpl implements SaleService {
 
         sale.setActive(false);
         saleRepository.save(sale);
-        logAudit("Sale", id, "SOFT_DELETE", null);
+        logAudit(Constants.SALE, id, Constants.SOFT_DELETE, null);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class SaleServiceImpl implements SaleService {
         Sale optionalProduct = saleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Sale not found"));
         saleRepository.delete(optionalProduct);
-        logAudit("Product", id, "HARD_DELETE", null);
+        logAudit(Constants.SALE, id, Constants.HARD_DELETE, null);
     }
 
     @Override

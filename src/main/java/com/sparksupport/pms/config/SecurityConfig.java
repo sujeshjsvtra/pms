@@ -20,6 +20,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.sparksupport.pms.util.Role;
+
 import io.swagger.v3.oas.models.PathItem;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -72,11 +74,11 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails admin = User.withUsername("admin")
                 .password(passwordEncoder.encode("adminpass"))
-                .roles("ADMIN")
+                .roles(Role.ADMIN.name())
                 .build();
         UserDetails user = User.withUsername("user")
                 .password(passwordEncoder.encode("userpass"))
-                .roles("USER")
+                .roles(Role.USER.name())
                 .build();
         return new InMemoryUserDetailsManager(admin, user);
     }
